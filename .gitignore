@@ -3,7 +3,6 @@ node_modules/
 
 # Build output
 build/
-dist/
 out/
 
 # Production env files (never commit secrets)

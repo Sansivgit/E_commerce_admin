@@ -4,6 +4,8 @@ node_modules/
 # Build output
 build/
 out/
+dist
+dist-ssr
 
 # Production env files (never commit secrets)
 .env

@@ -1,19 +1,30 @@
-import { defineConfig } from "vite";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), tsconfigPaths()],
-  /** Proxy matches storefront: browser uses `/api/*`; requires Express on port 5000 (`cd backend && npm run dev`). */
-  server: {
-    port: 5174,
-    strictPort: true,
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:5000",
-        changeOrigin: true,
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, __dirname, "");
+  const proxyTarget =
+    env.VITE_BACKEND_ORIGIN?.trim().replace(/\/$/, "") ||
+    "http://localhost:5000";
+  const port = Number(env.VITE_ADMIN_PORT || 5174) || 5174;
+
+  return {
+    plugins: [react(), tailwindcss(), tsconfigPaths()],
+    server: {
+      port,
+      strictPort: true,
+      proxy: {
+        "/api": {
+          target: proxyTarget,
+          changeOrigin: true,
+        },
       },
     },
-  },
+  };
 });

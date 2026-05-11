@@ -1,7 +1,7 @@
 import type { AdminProduct } from "@/context/AdminContext";
 
 /**
- * Express API base URL from `VITE_API_URL` (see project root `.env`).
+ * Express API base URL from `VITE_API_URL` (see `admin/.env`). When unset, the browser uses `/api` and Vite proxies to `VITE_BACKEND_ORIGIN`.
  * Trimmed, no trailing slash. Empty when unset — admin stays in offline/localStorage mode.
  */
 export function getApiBaseUrl(): string {
